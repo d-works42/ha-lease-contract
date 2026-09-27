@@ -1,0 +1,12 @@
+{
+  "domain": "lease_contract",
+  "name": "Car Lease Contract",
+  "codeowners": ["@yourgithubusername"],
+  "config_flow": true,
+  "documentation": "https://github.com/yourgithubusername/ha-lease-contract",
+  "integration_type": "hub",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/yourgithubusername/ha-lease-contract/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

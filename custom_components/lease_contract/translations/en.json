@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add a car lease contract",
+        "description": "Set up tracking for one car leasing contract. You can add multiple contracts by repeating this flow with a different odometer sensor.",
+        "data": {
+          "name": "Name",
+          "odometer_entity": "Odometer sensor (km)",
+          "max_km": "Maximum km in the contract",
+          "start_date": "Contract start date",
+          "end_date": "Contract end date",
+          "start_odometer": "Odometer reading at contract start (optional)"
+        },
+        "data_description": {
+          "start_odometer": "Leave empty to use the odometer's current reading as the starting point."
+        }
+      }
+    },
+    "error": {
+      "end_before_start": "The contract end date must be after the start date."
+    },
+    "abort": {
+      "already_configured": "This odometer sensor already has a lease contract configured."
+    }
+  }
+}
