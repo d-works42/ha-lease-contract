@@ -1,0 +1,33 @@
+set_baseline:
+  name: Set odometer baseline
+  description: >-
+    Manually correct the stored baseline odometer reading(s) for a lease
+    contract. Use this if a value looks off after initial setup (e.g. you
+    added the integration mid-month, so "km left this month" started from
+    the wrong point), or after any other drift.
+  target:
+    device:
+      integration: lease_contract
+  fields:
+    start_odometer:
+      name: Contract start odometer
+      description: >-
+        Override the odometer reading that counts as "0 km used" for the
+        whole contract.
+      required: false
+      selector:
+        number:
+          min: 0
+          step: 0.1
+          mode: box
+    month_start_odometer:
+      name: Month start odometer
+      description: >-
+        Override the odometer reading used as the start of the current
+        calendar month (used to compute "km left this month").
+      required: false
+      selector:
+        number:
+          min: 0
+          step: 0.1
+          mode: box

@@ -13,12 +13,15 @@ from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN, PLATFORMS
 from .coordinator import LeaseContractCoordinator
+from .services import async_setup_services
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up one lease contract from a config entry."""
+    async_setup_services(hass)
+
     coordinator = LeaseContractCoordinator(hass, entry)
     await coordinator.async_setup()
 

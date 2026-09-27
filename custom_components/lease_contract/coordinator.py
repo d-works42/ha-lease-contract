@@ -28,6 +28,7 @@ from .const import (
     STORE_KEY_MONTH_START_ODOMETER,
     STORE_KEY_START_ODOMETER,
 )
+from .history_helper import async_get_historical_odometer
 from .storage import LeaseContractStore
 
 _LOGGER = logging.getLogger(__name__)
@@ -71,7 +72,11 @@ class LeaseContractCoordinator(DataUpdateCoordinator[ContractResult]):
             if manual_start is not None:
                 baseline = float(manual_start)
             else:
-                baseline = self._read_odometer_state() or 0.0
+                baseline = await async_get_historical_odometer(
+                    self.hass, self.odometer_entity_id, self._local_midnight_utc(self.start_date)
+                )
+                if baseline is None:
+                    baseline = self._read_odometer_state() or 0.0
             self.store.data[STORE_KEY_START_ODOMETER] = baseline
             await self.store.async_save()
 
@@ -93,6 +98,10 @@ class LeaseContractCoordinator(DataUpdateCoordinator[ContractResult]):
         self.hass.async_create_task(self.async_refresh())
 
     # --- data update ---
+
+    def _local_midnight_utc(self, target: date):
+        """Return midnight (local time) of ``target`` as an aware UTC datetime."""
+        return dt_util.as_utc(dt_util.start_of_local_day(target))
 
     def _read_odometer_state(self) -> float | None:
         state = self.hass.states.get(self.odometer_entity_id)
@@ -122,7 +131,12 @@ class LeaseContractCoordinator(DataUpdateCoordinator[ContractResult]):
         month_key = f"{today.year}-{today.month:02d}"
         if self.store.data.get(STORE_KEY_MONTH_KEY) != month_key:
             self.store.data[STORE_KEY_MONTH_KEY] = month_key
-            self.store.data[STORE_KEY_MONTH_START_ODOMETER] = current_odometer
+            month_start_reading = await async_get_historical_odometer(
+                self.hass, self.odometer_entity_id, self._local_midnight_utc(today.replace(day=1))
+            )
+            self.store.data[STORE_KEY_MONTH_START_ODOMETER] = (
+                month_start_reading if month_start_reading is not None else current_odometer
+            )
             await self.store.async_save()
 
         return compute_contract_result(

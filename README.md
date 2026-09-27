@@ -64,6 +64,48 @@ This baseline is stored once, on first setup, and does not change
 afterwards (even if you later edit or reinstall — removing and
 re-adding the integration will reset it).
 
+## Fixing an inaccurate baseline
+
+Two baseline odometer readings are captured automatically and then reused
+going forward:
+
+- the reading that counts as **"0 km used"** for the whole contract
+- the reading at the **start of the current calendar month** (used for
+  "km left this month")
+
+Both are captured at the moment they're first needed (initial setup, and
+each time a new calendar month starts) - if the odometer's true reading at
+that point in time isn't known, the integration falls back to whatever the
+odometer currently shows. This means:
+
+- Setting up the integration **mid-month** will make the first month's "km
+  left this month" too optimistic (it think 0 km were driven yet this
+  month, even if you're on day 20).
+- Adding a contract **after the lease already started** without filling in
+  the optional "Odometer reading at contract start" field has the same
+  effect on "km left" as a whole.
+
+The integration will try to recover the correct historical value from Home
+Assistant's recorder before falling back to "current reading" - but this
+only works if the recorder actually still has data that far back (its
+default retention is just 10 days, via `recorder: purge_keep_days`), so it
+mainly helps when HA happened to be offline right at a month boundary, not
+for backfilling weeks of history.
+
+If a value looks off, correct it directly with the **`lease_contract.set_baseline`**
+service (Developer Tools → Actions in Home Assistant):
+
+| Field | What it does |
+|---|---|
+| Target device | The car/contract device to correct |
+| Contract start odometer | Overrides the whole-contract baseline |
+| Month start odometer | Overrides this month's starting point |
+
+For example, to fix "km left this month" being too high: work out what the
+odometer read on the 1st of this month (current reading minus km you've
+actually driven since then) and set that as **Month start odometer**. The
+affected sensors update immediately.
+
 ## Project layout
 
 ```

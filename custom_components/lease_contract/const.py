@@ -17,3 +17,8 @@ STORE_KEY_MONTH_KEY = "month_key"
 STORE_KEY_MONTH_START_ODOMETER = "month_start_odometer"
 
 STORAGE_VERSION = 1
+
+# --- Service ---
+SERVICE_SET_BASELINE = "set_baseline"
+ATTR_START_ODOMETER = "start_odometer"
+ATTR_MONTH_START_ODOMETER = "month_start_odometer"
