@@ -1,12 +1,12 @@
 {
   "domain": "lease_contract",
   "name": "Car Lease Contract",
-  "codeowners": ["@yourgithubusername"],
+  "codeowners": ["@d-works42"],
   "config_flow": true,
-  "documentation": "https://github.com/yourgithubusername/ha-lease-contract",
+  "documentation": "https://github.com/d-works42/ha-lease-contract",
   "integration_type": "hub",
   "iot_class": "calculated",
-  "issue_tracker": "https://github.com/yourgithubusername/ha-lease-contract/issues",
+  "issue_tracker": "https://github.com/d-works42/ha-lease-contract/issues",
   "requirements": [],
-  "version": "0.3.0"
+  "version": "0.3.3"
 }

@@ -1,5 +1,11 @@
 # Car Lease Contract for Home Assistant
 
+[![Version][version-src]][version-href]
+[![HACS: Custom][hacs-src]][hacs-href]
+[![Downloads][downloads-src]][downloads-href]
+[![Hits per month][hits-src]][hits-href]
+[![code style: prettier][code-style-src]][code-style-href]
+
 Track one or more car leasing contracts in Home Assistant, based on an
 existing odometer sensor for each car. Fully configured through the UI,
 no YAML needed.
@@ -129,6 +135,26 @@ Two more workflows run on every push/PR and once a day:
 validation). Keep an eye on their status — HACS's published-repository
 review process expects both to pass.
 
+### Troubleshooting: HACS shows a commit hash instead of a version
+
+HACS falls back to showing the current commit SHA whenever a repository
+has **no GitHub Releases yet** - it only shows a real version number once
+at least one tagged Release exists. If you're seeing a commit hash:
+
+1. Check the **Actions** tab on GitHub for a run of the "Release" workflow.
+   If it never ran: the workflow only triggers on a push to `main` that
+   touches `manifest.json`, so the very first release usually needs a
+   manual kick via **Actions → Release → Run workflow** (the
+   `workflow_dispatch` trigger).
+2. If the run shows a red ✗: the most common cause is that the repository
+   doesn't allow the workflow to create releases yet. Go to
+   **Settings → Actions → General → Workflow permissions** and select
+   **"Read and write permissions"**, then re-run the workflow.
+3. Once a Release exists (check the repo's **Releases** page on GitHub),
+   go back into HACS, open this integration, and use **Redownload** - that
+   forces HACS to re-check the repository instead of waiting for its
+   normal refresh cycle.
+
 ## Project layout
 
 ```
@@ -148,3 +174,15 @@ custom_components/lease_contract/
 ## License
 
 MIT — adjust as you like once this is in your own repository.
+
+<!-- Badge reference links -->
+[version-src]: https://img.shields.io/github/v/release/d-works42/ha-lease-contract.svg?style=flat-square
+[version-href]: https://github.com/d-works42/ha-lease-contract/releases
+[hacs-src]: https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=flat-square
+[hacs-href]: https://github.com/hacs/integration
+[downloads-src]: https://img.shields.io/github/downloads/d-works42/ha-lease-contract/total.svg?style=flat-square
+[downloads-href]: https://github.com/d-works42/ha-lease-contract/releases
+[hits-src]: https://hits.dwyl.com/d-works42/ha-lease-contract.svg?style=flat-square
+[hits-href]: https://hits.dwyl.com/d-works42/ha-lease-contract
+[code-style-src]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square
+[code-style-href]: https://github.com/prettier/prettier
