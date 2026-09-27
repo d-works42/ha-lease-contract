@@ -1,0 +1,19 @@
+name: Prettier
+
+# Checks formatting of the repo's markdown/YAML/JSON files against
+# .prettierrc.json. The integration's Python code is not Prettier's
+# concern - see the "code style" note in the README.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npx --yes prettier --check "**/*.{md,yml,yaml,json}"

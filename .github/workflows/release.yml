@@ -1,0 +1,55 @@
+name: Release
+
+# HACS discovers new versions of an integration via GitHub Releases (tags).
+# This workflow automates that: whenever manifest.json's "version" field is
+# bumped and pushed to main, it creates a matching git tag + GitHub Release
+# automatically, so there's no manual tagging step.
+#
+# Release flow for maintainers:
+#   1. Bump "version" in custom_components/lease_contract/manifest.json
+#   2. Commit and push (or merge) to main
+#   3. This workflow tags it (vX.Y.Z) and publishes a GitHub Release
+#   4. HACS will offer the new version as an update, with "Latest version"
+#      preselected by default when installing/redownloading
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "custom_components/lease_contract/manifest.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Tag and release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version from manifest.json
+        id: version
+        run: |
+          VERSION=$(python3 -c "import json;print(json.load(open('custom_components/lease_contract/manifest.json'))['version'])")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether this version is already tagged
+        id: tag_check
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          generate_release_notes: true
