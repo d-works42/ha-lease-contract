@@ -106,6 +106,29 @@ odometer read on the 1st of this month (current reading minus km you've
 actually driven since then) and set that as **Month start odometer**. The
 affected sensors update immediately.
 
+## Releasing new versions
+
+HACS discovers updates through **GitHub Releases** (git tags), not just
+commits on `main`. This repo automates that with
+`.github/workflows/release.yml`:
+
+1. Bump `"version"` in `custom_components/lease_contract/manifest.json`
+   (semantic versioning, e.g. `0.2.0` → `0.3.0`)
+2. Commit and push to `main`
+3. The workflow tags it `vX.Y.Z` and publishes a matching GitHub Release
+   automatically — no manual tagging needed
+
+Once a repo has releases, HACS shows a version dropdown when
+installing/redownloading, with **"Latest version"** preselected by
+default — so nothing further is needed to make "latest" the default
+install target.
+
+Two more workflows run on every push/PR and once a day:
+`.github/workflows/hacs.yml` (HACS structure/manifest validation) and
+`.github/workflows/hassfest.yml` (Home Assistant's own integration
+validation). Keep an eye on their status — HACS's published-repository
+review process expects both to pass.
+
 ## Project layout
 
 ```
