@@ -4,7 +4,6 @@
 [![HACS: Custom][hacs-src]][hacs-href]
 [![Downloads][downloads-src]][downloads-href]
 [![Hits per month][hits-src]][hits-href]
-[![code style: prettier][code-style-src]][code-style-href]
 
 Track one or more car leasing contracts in Home Assistant, based on an
 existing odometer sensor for each car. Fully configured through the UI,
