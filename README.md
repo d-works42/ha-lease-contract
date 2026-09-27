@@ -1,9 +1,12 @@
 # Car Lease Contract for Home Assistant
 
+<img src="icon.png" alt="Car Lease Contract icon" width="96" height="96">
+
 [![Version][version-src]][version-href]
 [![HACS: Custom][hacs-src]][hacs-href]
 [![Downloads][downloads-src]][downloads-href]
 [![Hits per month][hits-src]][hits-href]
+[![code style: prettier][code-style-src]][code-style-href]
 
 Track one or more car leasing contracts in Home Assistant, based on an
 existing odometer sensor for each car. Fully configured through the UI,
@@ -153,6 +156,22 @@ at least one tagged Release exists. If you're seeing a commit hash:
    go back into HACS, open this integration, and use **Redownload** - that
    forces HACS to re-check the repository instead of waiting for its
    normal refresh cycle.
+
+## Icon
+
+`icon.png` / `icon@2x.png` (and matching `logo.png` / `logo@2x.png`) sit at
+the repo root - HACS picks these up automatically as the repository's
+thumbnail in its store listing, no config needed.
+
+They do **not** change the icons already on the sensors themselves (those
+come from Material Design Icons via `_attr_icon` in `sensor.py`, e.g.
+`mdi:map-marker-distance`), and they won't appear next to the integration
+in **Settings → Devices & Services** either - that specific spot is
+controlled by [home-assistant/brands](https://github.com/home-assistant/brands),
+a separate curated repository that accepts community/custom integrations
+under its `custom_integrations/` folder via pull request. If you want the
+icon there too, that's a one-time PR to that repo using this same
+`icon.png`/`logo.png`, not something this repository can do on its own.
 
 ## Project layout
 
